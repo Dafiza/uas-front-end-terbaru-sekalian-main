@@ -51,7 +51,7 @@ export default function Home() {
   const [loadingMenu, setLoadingMenu] = useState<boolean>(false);
   const [backgrounds, setBackgrounds] = useState<Background[]>([]);
 
-  //  Ambil gambar background & menu dari backend API
+  // Ambil gambar background & menu dari backend API
   useEffect(() => {
     async function fetchData() {
       try {
@@ -123,7 +123,7 @@ export default function Home() {
       localStorage.setItem("meimo_comments", JSON.stringify(comments));
   }, [comments]);
 
-  //  Pencarian menu
+  // Pencarian menu
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const q = searchQuery.trim().toLowerCase();
@@ -138,8 +138,8 @@ export default function Home() {
     );
   };
 
-  //  Komentar
-  const handleSubmit = (e: FormEvent<HTMLFormEvent>) => {
+  // Komentar - PERBAIKAN DI SINI
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const name =
@@ -161,7 +161,7 @@ export default function Home() {
     setRating(0);
   };
 
-  //  Tambah ke keranjang
+  // Tambah ke keranjang
   const addToCart = async (item: MenuItem, qty = 1) => {
     const key = "meimo_cart";
     const raw = localStorage.getItem(key);
@@ -176,7 +176,6 @@ export default function Home() {
     alert(`${item.name} ditambahkan ke keranjang.`);
   };
 
-
   const bgUrl =
     backgrounds.length > 0
       ? backgrounds[currentBgIndex].url
@@ -184,7 +183,7 @@ export default function Home() {
 
   return (
     <div>
-      {/*  HERO  */}
+      {/* HERO */}
       <header
         className="hero-section"
         style={{
@@ -204,7 +203,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/*  MENU GALLERY */}
+      {/* MENU GALLERY */}
       <section id="menu-gallery" className="py-5 bg-dark text-white">
         <div className="container text-center mb-5">
           <h2>Galeri Menu Spesial</h2>
@@ -215,7 +214,10 @@ export default function Home() {
             <div
               key={menu._id || menu.name}
               className="scroll-card-item"
-              onClick={() => setSelectedMenu(menu)}
+              onClick={() => {
+                setSelectedMenu(menu);
+                setShowModal(true);
+              }}
             >
               <div className="card menu-card shadow">
                 <img
@@ -243,7 +245,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/*  MODAL DETAIL MENU */}
+      {/* MODAL DETAIL MENU */}
       {showModal && selectedMenu && (
         <div
           className="modal fade show d-block"
@@ -290,25 +292,25 @@ export default function Home() {
 
                   <div className="col-lg-7">
                     <div className="mb-4">
-                      <h4> Deskripsi</h4>
+                      <h4>Deskripsi</h4>
                       <p>{selectedMenu.description}</p>
                     </div>
 
                     {selectedMenu.ingredients && (
                       <div className="mb-4">
-                        <h4> Bahan-Bahan Utama</h4>
+                        <h4>Bahan-Bahan Utama</h4>
                         <p className="text-muted">{selectedMenu.ingredients}</p>
                       </div>
                     )}
 
                     <div className="mb-4">
-                      <h4> Sejarah & Budaya</h4>
+                      <h4>Sejarah & Budaya</h4>
                       <p>{selectedMenu.history}</p>
                     </div>
 
                     {selectedMenu.tips && (
                       <div className="mb-4">
-                        <h4> Tips Chef</h4>
+                        <h4>Tips Chef</h4>
                         <div className="alert alert-warning bg-warning-subtle border-warning">
                           {selectedMenu.tips}
                         </div>
@@ -316,7 +318,7 @@ export default function Home() {
                     )}
 
                     <hr className="my-4" />
-                    <h4> Bagikan Pengalaman Anda</h4>
+                    <h4>Bagikan Pengalaman Anda</h4>
 
                     <div className="mb-3 p-3 bg-light rounded border rating-stars text-center">
                       <span className="fw-bold me-3 align-middle fs-5">
@@ -365,7 +367,7 @@ export default function Home() {
                         ></textarea>
                       </div>
                       <button type="submit" className="btn btn-primary w-100 btn-lg">
-                         Kirim Komentar
+                        Kirim Komentar
                       </button>
                     </form>
 
@@ -419,11 +421,11 @@ export default function Home() {
         </div>
       )}
 
-      {/* ========== FOOTER (MAP + INFO + TIDAK DIHAPUS) ========== */}
+      {/* FOOTER (MAP + INFO + TIDAK DIHAPUS) */}
       <footer className="footer mt-5">
         <div className="container">
           <div className="mb-4">
-            <h5 className="mb-3 text-center"> Lokasi Kami</h5>
+            <h5 className="mb-3 text-center">Lokasi Kami</h5>
             <div className="ratio ratio-21x9">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.712454356452!2d106.78726097499202!3d-6.174721693801916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f70002bcd3f9%3A0xcf51c0e1b63aedf4!2sMeimo%20Masakan%20Manado%20Neo%20Soho!5e0!3m2!1sid!2sid!4v1730989000000!5m2!1sid!2sid"
